@@ -1,0 +1,47 @@
+.Container {
+    display: flex;
+    height: 3.5rem;
+}
+
+.InputContainer {
+    height: 100%;
+    width: 20rem;
+
+}
+
+.InputContainer input {
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    outline: 0;
+    border-radius: .9rem 0 0 .9rem;
+    border: 0;
+    text-align: center;
+    font-size: 1.2rem;
+    font-family: 'Montserrat-Regular';
+    caret-color: grey;
+}
+
+.SearchButton {
+    height: 100%;
+    width: 3.8rem;
+    background-color: #E6BC40;
+    border: 0;
+    border-radius: 0 .9rem .9rem 0;
+    transition: .5s;
+    cursor: pointer;
+}
+
+.SearchButton:hover {
+    background-color: #E6A440;
+}
+
+.SearchButton:active {
+    background-color: #E6BC40;
+}
+
+.SearchButton img {
+    transform: scaleX(-1);
+    height: 2.5rem;
+    width: 2.5rem;
+}

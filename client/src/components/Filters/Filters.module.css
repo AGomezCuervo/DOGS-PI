@@ -1,0 +1,17 @@
+.Container {
+    padding-top: 1.5rem;
+    padding-bottom: .4rem;
+}
+
+.Filters {
+    display: flex;
+    gap: 30%;
+    font-family: 'Montserrat-Regular';
+    font-size: .8rem;
+    color: white;
+    list-style-type: none;
+    margin: 0;
+}
+
+
+

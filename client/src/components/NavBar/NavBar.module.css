@@ -1,0 +1,39 @@
+header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    min-height: 5rem;
+    background-color: #197667;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    margin-bottom: 8rem;
+    justify-content: space-between;
+    padding: 0 2%;
+
+    
+}
+
+.Button {
+    background-color: #E6BC40;
+    height: 3rem;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: .5rem;
+    width: 14rem;
+    font-family: 'Montserrat-Bold';
+    border: 0;
+    transition: .5s;
+}
+
+.Button:hover {
+    background-color: #E6A440;
+}
+
+.Button:active {
+    background-color: #E6BC40;
+}
+
+
