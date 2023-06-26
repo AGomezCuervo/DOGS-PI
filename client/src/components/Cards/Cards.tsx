@@ -14,7 +14,6 @@ const Cards: React.FC = () => {
   useEffect(() => {
     dispatch(fetchAllDogs());
     dispatch(fetchAllTemperaments())
-    console.log("me active");
   }, [dispatch]);
 
   return (
