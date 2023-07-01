@@ -11,9 +11,9 @@ const NavBar: React.FC = () => {
             <SearchBar/>
 
             
-                <div>
+                <Link to={"/form"}>
                     <button className={style.Button}>Add your Dog</button>
-                </div>
+                </Link>
             
         </header>
     );

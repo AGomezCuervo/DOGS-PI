@@ -1,7 +1,33 @@
 import style from "./Temperament.module.css"
 import temperamentIcon from "../../../assets/Icons/temperament_icon.png";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAllTemperaments, selectSomeTemperaments, setSelectTemperament } from "../../../Redux/features/temperamentsSlice";
+import { AppDispatch } from "../../../Redux/store";
+import { sortByTemperament } from "../../../Redux/features/dogsSlice";
 
 function Temperament() {
+    const temperaments = useSelector(selectAllTemperaments);
+    const dispatch:AppDispatch = useDispatch();
+    const selectedTemperaments = useSelector(selectSomeTemperaments);
+
+    const handleOnClick = (event:React.MouseEvent<HTMLButtonElement>) => {
+        const name = (event.target as HTMLButtonElement).name;
+
+        if(!selectedTemperaments.includes(name)){
+            dispatch(setSelectTemperament([...selectedTemperaments, name]));
+            console.log(name);
+            
+        
+    } else dispatch(setSelectTemperament(selectedTemperaments.filter((temperament) => temperament !== name)));
+    }
+
+    const handleOnSubmit = () => {
+        if (selectedTemperaments.length > 0) {
+            dispatch(sortByTemperament(selectedTemperaments))
+        } else console.log("Error");
+        
+    }
+
     return (
         <>
             <div className={style.Filter}>
@@ -9,8 +35,16 @@ function Temperament() {
                 <h3>Temperament</h3>
             </div>
             <ul className={style.Dropmenu}>
-                <li>Heaviest</li>
-                <li>Lightest</li>
+                <div className={style.TemperamentsContainer}>
+                    {
+                        temperaments?.map((temperament, index) => (
+                            <li key={index}>
+                                <button name={temperament} onClick={handleOnClick}>{temperament}</button>
+                            </li>
+                        ))
+                    }
+                </div>
+                <button onClick={handleOnSubmit}>Filter</button>
             </ul>
         </>
     )

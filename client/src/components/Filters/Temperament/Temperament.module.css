@@ -16,7 +16,7 @@
     list-style-type: none;
     margin: 0;
     padding: 1rem;
-    width: 10rem;
+    width: fit-content;
     position: absolute;
     z-index: 1;
     display: none;
@@ -33,4 +33,9 @@ ul li:hover .Dropmenu {
     display: flex;
     gap: .4rem;
     flex-direction: column;
+}
+
+.TemperamentsContainer {
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
 }

@@ -2,7 +2,8 @@ import { useState } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar/NavBar";
 import Cards from "./components/Cards/Cards";
-import { Form, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Form from "./components/Form/Form";
 import Detail from "./components/Detail/Detail";
 
 function App() {

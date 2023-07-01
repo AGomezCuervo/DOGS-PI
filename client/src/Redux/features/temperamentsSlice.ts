@@ -5,12 +5,14 @@ import { RootState } from "../store";
 
 interface TemperamentState {
     temperaments?: string[];
+    selectedTemperaments: string[]
     status: string;
-    error: string
+    error: string;
 }
 
 const initialState:TemperamentState = {
     temperaments: [],
+    selectedTemperaments: [],
     status: "",
     error: ""
 }
@@ -28,7 +30,11 @@ export const fetchAllTemperaments = createAsyncThunk("temperaments/fetchAllTempe
 const temperamentsSlice = createSlice({
     name: "temperaments",
     initialState,
-    reducers: {},
+    reducers: {
+        setSelectTemperament: (state,action) => {
+            state.selectedTemperaments = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAllTemperaments.pending, (state) => {
@@ -47,6 +53,8 @@ const temperamentsSlice = createSlice({
 })
 
 export default temperamentsSlice.reducer;
+export const {setSelectTemperament} = temperamentsSlice.actions;
 export const selectAllTemperaments = (state:RootState) => state.temperaments.temperaments;
 export const selectStatus = (state: RootState) => state.temperaments.status;
 export const selectError = (state: RootState) => state.temperaments.error;
+export const selectSomeTemperaments = (state:RootState) => state.temperaments.selectedTemperaments;

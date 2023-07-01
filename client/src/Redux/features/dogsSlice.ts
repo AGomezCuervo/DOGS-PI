@@ -73,31 +73,28 @@ const dogsSlice = createSlice({
 
       sortFromAtoZ: (state) => {
          state.dogs = sortAtoZ(state.dogs);
-         state.filters.breed.atoZ = true;
-         state.filters.breed.ztoA = false;
-         state.filters.weight.heavier = false;
-         state.filters.weight.lighter = false;
       },
       sortFromZtoA: (state) => {
          state.dogs = sortZtoA(state.dogs);
-         state.filters.breed.ztoA = true;
-         state.filters.breed.atoZ = false;
-         state.filters.weight.heavier = false;
-         state.filters.weight.lighter = false;
       },
       sortFromLighter: (state) => {
          state.dogs = sortLighter(state.dogs);
-         state.filters.breed.ztoA = false;
-         state.filters.breed.atoZ = false;
-         state.filters.weight.heavier = false;
-         state.filters.weight.lighter = true;
       },
       sortFromHeavier: (state) => {
          state.dogs = sortHeavier(state.dogs);
-         state.filters.breed.ztoA = false;
-         state.filters.breed.atoZ = false;
-         state.filters.weight.heavier = true;
-         state.filters.weight.lighter = false;
+      },
+      sortByTemperament: (state, action) => {
+         state.filters.temperament = true;
+         const dogs = state.dogs;
+         const temperamentsArray = action.payload;
+         const filteredDogs = dogs.filter((dog) => {
+               return temperamentsArray.every((temp:string) => dog.temperaments.includes(temp))
+         })
+         console.log(filteredDogs);
+         console.log(temperamentsArray);
+         
+         state.dogs = filteredDogs;
+         
       }
     },
     extraReducers: (builder) => {
@@ -124,7 +121,7 @@ const dogsSlice = createSlice({
 
 export default dogsSlice.reducer;
 export { fetchAllDogs };
-export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA} = dogsSlice.actions;
+export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA, sortByTemperament} = dogsSlice.actions;
 export const selectAllDogs = (state: RootState) => state.dogs.dogs;
 export const selectStatus = (state: RootState) => state.dogs.status;
 export const selectDog = (state: RootState) => state.dogs.dog;
