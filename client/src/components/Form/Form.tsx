@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import style from "./Form.module.css";
-import axios from "axios";
+import axios, { all } from "axios";
 import { CREATE_NEW_DOG } from "../../utils/constants";
 import { validations } from "./validations";
 
@@ -28,6 +28,8 @@ export interface Input {
 
 
 const Form =  () => {
+
+    const [allowSubmit, setAllowSubmit] = useState(true)
 
     const [input, setInput] = useState<Input>({
         name: "",
@@ -71,61 +73,84 @@ const Form =  () => {
         })
     }
 
+    useEffect(() => {
+     setAllowSubmit(Object.values(input).every(item => item !== "") && Object.values(errors).every(error => error === ""))   
+    }, [errors, input])
 
-    return (
-        <>
+
+    return ( 
+        <div className={style.BGContainer}>
+            
+
             <form className={style.Container} onSubmit={handleOnSubmit}>
-                <div className={style.Option} >
-                    <label htmlFor="name">Breed</label>
-                    <input id="name" name="name" type="text" onChange={handleOnChange} />
+                <div>
+                    <div className={style.Option} >
+                        <label htmlFor="name">Breed</label>
+                        <input id="name" name="name" type="text" onChange={handleOnChange} />
+                    </div>
+                    {errors.name && <p>{errors.name}</p>}
                 </div>
 
-                <div className={`${style.Option} ${style.DoubleOption}`}>
-                    <div className={ style.Option }>
-                        <label htmlFor="min_height">Min height</label>
-                        <input id="min_height" name="min_height" type="number" onChange={handleOnChange} min="0" />
-                    </div>
+                <div>
+                    <div className={`${style.Option} ${style.DoubleOption}`}>
+                        <div className={ style.Option }>
+                            <label htmlFor="min_height">Min height</label>
+                            <input id="min_height" name="min_height" type="number" onChange={handleOnChange} min="0" />
+                        </div>
 
+                        <div className={style.Option}>
+                            <label htmlFor="max_height">Max height</label>
+                            <input id="max_height" name="max_height" type="number" onChange={handleOnChange} min="0" />
+                        </div>
+                    </div>
+                    {errors.height && <p>{errors.height}</p>}
+                </div>
+
+                <div>
+                    <div className={`${style.Option} ${style.DoubleOption}`}>
+                        <div className={style.Option}>
+                            <label htmlFor="min_weight:">Min weight</label>
+                            <input id="min_weight:" name="min_weight:" type="number" onChange={handleOnChange} min="0" />
+                        </div>
+
+                        <div className={style.Option}>
+                            <label htmlFor="max_weight:">Max weight</label>
+                            <input id="max_weight:" name="max_weight:" type="number" onChange={handleOnChange} min="0"/>
+                        </div>
+                    </div>
+                    {errors.weight && <p>{errors.weight}</p>}
+                </div>
+
+                <div>
+                    <div className={`${style.Option} ${style.DoubleOption}`}>
+                        <div className={style.Option}>
+                            <label htmlFor="min_life_span">min lifespan</label>
+                            <input id="min_life_span" name="min_life_span" type="number" onChange={handleOnChange} min="0" />
+                        </div>
+                        <div className={style.Option}>
+                            <label htmlFor="max_life_span">max lifespan</label>
+                            <input id="max_life_span" name="max_life_span" type="number" onChange={handleOnChange} min="0" />
+                        </div>
+                    </div>
+                    {errors.life_span && <p>{errors.life_span}</p>}
+                </div>
+                <div>
                     <div className={style.Option}>
-                        <label htmlFor="max_height">Max height</label>
-                        <input id="max_height" name="max_height" type="number" onChange={handleOnChange} min="0" />
+                        <label htmlFor="image">Image</label>
+                        <input id="image" name="image" type="text" onChange={handleOnChange} />
+                    </div>
+                    {errors.image && <p>{errors.image}</p>}
+
+                    <div className={style.ImageContainer}>
+                        <img src={input.image} alt="img" />
                     </div>
                 </div>
 
-
-                <div className={`${style.Option} ${style.DoubleOption}`}>
-                    <div className={style.Option}>
-                        <label htmlFor="min_weight:">Min weight</label>
-                        <input id="min_weight:" name="min_weight:" type="number" onChange={handleOnChange} min="0" />
-                    </div>
-
-                    <div className={style.Option}>
-                        <label htmlFor="max_weight:">Max weight</label>
-                        <input id="max_weight:" name="max_weight:" type="number" onChange={handleOnChange} min="0"/>
-                    </div>
-                </div>
-
-                <div className={`${style.Option} ${style.DoubleOption}`}>
-                    <div className={style.Option}>
-                        <label htmlFor="min_life_span">min lifespan</label>
-                        <input id="min_life_span" name="min_life_span" type="number" onChange={handleOnChange} min="0" />
-                    </div>
-                    <div className={style.Option}>
-                        <label htmlFor="max_life_span">max lifespan</label>
-                        <input id="max_life_span" name="max_life_span" type="number" onChange={handleOnChange} min="0" />
-                    </div>
-                </div>
-
-                <div className={style.Option}>
-                    <label htmlFor="image">Image</label>
-                    <input id="image" name="image" type="text" onChange={handleOnChange} />
-                </div>
-
-                <button type="submit"> Create Dog</button>
+                <button type="submit" disabled={!allowSubmit}> Create Dog</button>
 
 
             </form>
-        </>
+        </div>
     )
 } 
 

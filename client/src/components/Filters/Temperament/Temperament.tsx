@@ -3,7 +3,7 @@ import temperamentIcon from "../../../assets/Icons/temperament_icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllTemperaments, selectSomeTemperaments, setSelectTemperament } from "../../../Redux/features/temperamentsSlice";
 import { AppDispatch } from "../../../Redux/store";
-import { sortByTemperament } from "../../../Redux/features/dogsSlice";
+import { fetchAllDogs, sortByTemperament } from "../../../Redux/features/dogsSlice";
 
 function Temperament() {
     const temperaments = useSelector(selectAllTemperaments);
@@ -24,7 +24,7 @@ function Temperament() {
     const handleOnSubmit = () => {
         if (selectedTemperaments.length > 0) {
             dispatch(sortByTemperament(selectedTemperaments))
-        } else console.log("Error");
+        } else dispatch(fetchAllDogs())
         
     }
 
