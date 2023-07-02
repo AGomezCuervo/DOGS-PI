@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import dogsReducer from "../Redux/features/dogsSlice"
-import temperamentsReducer from "../Redux/features/temperamentsSlice"
-
+import dogsReducer from "../Redux/features/dogsSlice";
+import temperamentsReducer from "../Redux/features/temperamentsSlice";
+import utilsReducer from "../utils/utilsSlice";
 export const store = configureStore({
    reducer: {
     dogs: dogsReducer,
-    temperaments: temperamentsReducer
+    temperaments: temperamentsReducer,
+    utils: utilsReducer
    },
    devTools: true,
 });

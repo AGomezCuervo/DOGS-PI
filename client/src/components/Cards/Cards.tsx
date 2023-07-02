@@ -6,10 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
 import { Dog, fetchAllDogs, selectAllDogs } from "../../Redux/features/dogsSlice";
 import { fetchAllTemperaments, selectAllTemperaments } from "../../Redux/features/temperamentsSlice";
+import Pagination from "../Pagination/Pagination";
+import { selectCurrentPage } from "../../utils/utilsSlice";
 
 const Cards: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const dogs = useSelector(selectAllDogs)
+  const dogs = useSelector(selectAllDogs);
+  const currentPage = useSelector(selectCurrentPage);
+  const [dogsPerPage, setDogsPerPage] = useState(8);
+
+  const lastDogIndex = currentPage * dogsPerPage;
+  const firstDogIndex = lastDogIndex - dogsPerPage;
+
+  const currentDogs = dogs && dogs.length > 0 ? dogs.slice(firstDogIndex, lastDogIndex): [];
+
+
 
   useEffect(() => {
     dispatch(fetchAllDogs());
@@ -20,7 +31,7 @@ const Cards: React.FC = () => {
   return (
     <>
       <div className={style.Container}>
-        { dogs?.map((dog: Dog) => (
+        { currentDogs.map((dog: Dog) => (
           <Card
             key={dog.id}
             id={dog.id}
@@ -35,6 +46,13 @@ const Cards: React.FC = () => {
           />
         ))}
       </div>
+
+      <Pagination
+        totalDogs = {dogs.length}
+        dogsPerPage = {dogsPerPage}
+        currentPage = {currentPage}
+      />
+        
     </>
   );
 };

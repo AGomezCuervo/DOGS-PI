@@ -5,6 +5,7 @@ import {
    FULLFILLED,
    PENDING,
    REJECTED,
+   GET_DOG_SEARCH,
 } from "../../utils/constants";
 import { RootState } from "../store";
 import { sortAtoZ, sortHeavier, sortLighter, sortZtoA } from "../../utils/sorters";
@@ -65,6 +66,15 @@ const fetchAllDogs = createAsyncThunk("dogs/fetchAllDogs", async () => {
    }
 });
 
+const fetchDogByName = createAsyncThunk("dogs/fetchDogByName", async (name:string) => {
+   try {
+      const data = (await axios.get(GET_DOG_SEARCH + name)).data;
+      return data;
+   } catch (error) {
+      throw new Error("Something went wrong")
+   }
+})
+
 const dogsSlice = createSlice({
     name: "dogs",
     initialState,
@@ -115,12 +125,26 @@ const dogsSlice = createSlice({
         .addCase(fetchAllDogs.rejected, (state) => {
             state.error = "Error";
             state.status = REJECTED;
-         });
+         })
+         .addCase(fetchDogByName.pending, (state) => {
+            state.status = PENDING;
+         })
+         .addCase(fetchDogByName.fulfilled,(state, action) => {
+            state.dogs = action.payload;
+            state.status = FULLFILLED;
+            state.error = ""
+         })
+         .addCase(fetchDogByName.rejected, (state) => {
+            state.status = REJECTED;
+            state.error = "something went wrong"
+            state.dogs = [];
+
+         })
    },
 });
 
 export default dogsSlice.reducer;
-export { fetchAllDogs };
+export { fetchAllDogs, fetchDogByName };
 export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA, sortByTemperament} = dogsSlice.actions;
 export const selectAllDogs = (state: RootState) => state.dogs.dogs;
 export const selectStatus = (state: RootState) => state.dogs.status;
