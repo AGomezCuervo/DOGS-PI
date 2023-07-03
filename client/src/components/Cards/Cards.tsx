@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Card from "../Card/Card";
 import style from "./Cards.module.css";
@@ -8,6 +7,7 @@ import { Dog, fetchAllDogs, selectAllDogs } from "../../Redux/features/dogsSlice
 import { fetchAllTemperaments, selectAllTemperaments } from "../../Redux/features/temperamentsSlice";
 import Pagination from "../Pagination/Pagination";
 import { selectCurrentPage } from "../../utils/utilsSlice";
+import NavBar from "../NavBar/NavBar";
 
 const Cards: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -30,6 +30,7 @@ const Cards: React.FC = () => {
 
   return (
     <>
+      <NavBar/>
       <div className={style.Container}>
         { currentDogs.map((dog: Dog) => (
           <Card

@@ -5,11 +5,12 @@
 
 .Filters {
     display: flex;
-    gap: 30%;
+    gap: 15%;
     font-family: 'Montserrat-Regular';
     font-size: .8rem;
     color: white;
     list-style-type: none;
+    min-width: 25rem;
     margin: 0;
 }
 

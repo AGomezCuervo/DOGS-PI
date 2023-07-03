@@ -29,7 +29,6 @@ export const addDogs = async (body: Body) => {
         }
     })
 
-    console.log(temperaments);
     await newDog.$set('temperaments', temperaments)
 
 }

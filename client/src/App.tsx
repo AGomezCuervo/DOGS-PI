@@ -10,7 +10,6 @@ function App() {
 
    return (
       <div className="App">
-         <NavBar/>
          <Routes>
             <Route path="/" element={<Cards/>}/>
             <Route path="/detail/:id" element={<Detail/>}/>

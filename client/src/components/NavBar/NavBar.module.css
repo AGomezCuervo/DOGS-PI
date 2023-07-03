@@ -21,7 +21,7 @@ header {
     font-size: 1.5rem;
     cursor: pointer;
     border-radius: .5rem;
-    width: 14rem;
+    width: 13rem;
     font-family: 'Montserrat-Bold';
     border: 0;
     transition: .5s;
@@ -36,3 +36,43 @@ header {
 }
 
 
+
+.CreatedDogs {
+    font-family: 'Montserrat-Bold';
+    font-size: 1.1rem;
+    background-color: #E6BC40;
+    color: white;
+    position: relative;
+    width: 8rem;
+    height: 2.5rem;
+    border: none;
+    font-weight: bold;
+    transition: 0.5s;
+    border-radius: .3rem;
+    box-shadow: #B79028 0px 7px 2px, #000 0px 8px 5px;
+    cursor: pointer;
+}
+  
+.CreatedDogs:hover {
+    background-color: #E6A440;
+}
+  
+.CreatedDogs:active {
+    top: 4px;
+    box-shadow: #B79028 0px 3px 2px,#000 0px 3px 5px;
+}
+
+.ButtonsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 3rem;
+    min-width: 27rem;
+    
+}
+
+.Pressed {
+    top: 4px;
+    background-color: #E6A440 ;
+    box-shadow: #B79028 0px 3px 2px,#000 0px 3px 5px;
+}

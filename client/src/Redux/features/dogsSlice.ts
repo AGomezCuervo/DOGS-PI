@@ -6,6 +6,8 @@ import {
    PENDING,
    REJECTED,
    GET_DOG_SEARCH,
+   GET_DOG_BY_ID,
+   GET_ALL_DB_DOGS,
 } from "../../utils/constants";
 import { RootState } from "../store";
 import { sortAtoZ, sortHeavier, sortLighter, sortZtoA } from "../../utils/sorters";
@@ -75,6 +77,24 @@ const fetchDogByName = createAsyncThunk("dogs/fetchDogByName", async (name:strin
    }
 })
 
+const fetchDogById = createAsyncThunk("dogs/fetchDogById", async (id:string | undefined) => {
+   try {
+      const data = (await axios.get(GET_DOG_BY_ID + id)).data;
+      return data;
+   } catch (error) {
+      throw new Error("Something went wrong");
+   }
+})
+
+const fetchAllDBDogs = createAsyncThunk("dogs/fetchAllDBDogs", async() => {
+   try {
+      const data = (await axios.get(GET_ALL_DB_DOGS)).data;
+      return data;
+   } catch (error) {
+      throw new Error("Something went wrong");
+   }
+})
+
 const dogsSlice = createSlice({
     name: "dogs",
     initialState,
@@ -100,8 +120,6 @@ const dogsSlice = createSlice({
          const filteredDogs = dogs.filter((dog) => {
                return temperamentsArray.every((temp:string) => dog.temperaments.includes(temp))
          })
-         console.log(filteredDogs);
-         console.log(temperamentsArray);
          
          state.dogs = filteredDogs;
          
@@ -130,21 +148,44 @@ const dogsSlice = createSlice({
             state.status = PENDING;
          })
          .addCase(fetchDogByName.fulfilled,(state, action) => {
-            state.dogs = action.payload;
             state.status = FULLFILLED;
+            state.dogs = action.payload;
             state.error = ""
          })
          .addCase(fetchDogByName.rejected, (state) => {
             state.status = REJECTED;
             state.error = "something went wrong"
             state.dogs = [];
-
+         })
+         .addCase(fetchDogById.pending, (state) => {
+            state.status = PENDING;
+         })
+         .addCase(fetchDogById.fulfilled, (state, action) => {
+            state.status = FULLFILLED;
+            state.dog = action.payload;
+            state.error = ""
+         })
+         .addCase(fetchDogById.rejected, (state) => {
+            state.status = REJECTED;
+            state.error = "something went wrong";
+         })
+         .addCase(fetchAllDBDogs.pending, (state) => {
+            state.status = PENDING;
+         })
+         .addCase(fetchAllDBDogs.fulfilled, (state, action) => {
+            state.status = FULLFILLED;
+            state.dogs = action.payload;
+            state.error = ""
+         })
+         .addCase(fetchAllDBDogs.rejected, (state) => {
+            state.status = REJECTED;
+            state.error = "something went wrong"
          })
    },
 });
 
 export default dogsSlice.reducer;
-export { fetchAllDogs, fetchDogByName };
+export { fetchAllDogs, fetchDogByName, fetchDogById, fetchAllDBDogs};
 export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA, sortByTemperament} = dogsSlice.actions;
 export const selectAllDogs = (state: RootState) => state.dogs.dogs;
 export const selectStatus = (state: RootState) => state.dogs.status;

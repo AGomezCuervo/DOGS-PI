@@ -15,7 +15,6 @@ function Temperament() {
 
         if(!selectedTemperaments.includes(name)){
             dispatch(setSelectTemperament([...selectedTemperaments, name]));
-            console.log(name);
             
         
     } else dispatch(setSelectTemperament(selectedTemperaments.filter((temperament) => temperament !== name)));

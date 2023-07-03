@@ -1,19 +1,23 @@
 .BGContainer {
-    height: 100vh;
-    width: 100vw;
-    padding-top: 1rem;
+
 }
 
 .Container {
     margin: 0 auto;
-    margin-top: 10rem;
-    width: 70%;
+    margin-top: 1rem;
+    width: 50%;
     background-color: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border: 1px solid #B0ADAD;
     color: #0C3831;
     font-family: "Montserrat-Medium";
     border-radius: 0.9rem;
+    z-index: 1;
+    position: relative;
+}
+
+Form {
+    z-index: 1;
 }
 .Option label {
     display: block;
@@ -70,5 +74,37 @@
     margin: 0 auto;
 }
 
+.Wave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 0;
+}
 
+.GoBack {
+    z-index: 1;
+    position: relative;
+    display: block;
+    background-color: #E6BC40;
+    height: 3rem;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: .5rem;
+    width: 14rem;
+    font-family: 'Montserrat-Bold';
+    border: 0;
+    transition: .5s;
+    margin-left: 25%;
+    margin-top: 1rem;
+}
+
+.GoBack:hover {
+    background-color: #E6A440;
+}
+
+.GoBack:active {
+    background-color: #E6BC40;
+}
 
