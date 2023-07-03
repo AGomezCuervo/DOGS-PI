@@ -33,6 +33,9 @@ const temperamentsSlice = createSlice({
     reducers: {
         setSelectTemperament: (state,action) => {
             state.selectedTemperaments = action.payload
+        },
+        deleteTemperaments:  (state) => {
+            state.selectedTemperaments = [];
         }
     },
     extraReducers: (builder) => {
@@ -53,7 +56,7 @@ const temperamentsSlice = createSlice({
 })
 
 export default temperamentsSlice.reducer;
-export const {setSelectTemperament} = temperamentsSlice.actions;
+export const {setSelectTemperament, deleteTemperaments} = temperamentsSlice.actions;
 export const selectAllTemperaments = (state:RootState) => state.temperaments.temperaments;
 export const selectStatus = (state: RootState) => state.temperaments.status;
 export const selectError = (state: RootState) => state.temperaments.error;

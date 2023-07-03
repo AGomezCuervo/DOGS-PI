@@ -1,7 +1,7 @@
 import style from "./Temperament.module.css"
 import temperamentIcon from "../../../assets/Icons/temperament_icon.png";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllTemperaments, selectSomeTemperaments, setSelectTemperament } from "../../../Redux/features/temperamentsSlice";
+import { deleteTemperaments, selectAllTemperaments, selectSomeTemperaments, setSelectTemperament } from "../../../Redux/features/temperamentsSlice";
 import { AppDispatch } from "../../../Redux/store";
 import { fetchAllDogs, sortByTemperament } from "../../../Redux/features/dogsSlice";
 
@@ -23,8 +23,11 @@ function Temperament() {
     const handleOnSubmit = () => {
         if (selectedTemperaments.length > 0) {
             dispatch(sortByTemperament(selectedTemperaments))
-        } else dispatch(fetchAllDogs())
-        
+        } else dispatch(fetchAllDogs())   
+    }
+
+    const handleOnDelete = () => {
+        dispatch(deleteTemperaments())
     }
 
     return (
@@ -38,12 +41,13 @@ function Temperament() {
                     {
                         temperaments?.map((temperament, index) => (
                             <li key={index}>
-                                <button name={temperament} onClick={handleOnClick}>{temperament}</button>
+                                <button className={selectedTemperaments.includes(temperament)? style.Pressed : ""} name={temperament} onClick={handleOnClick}>{temperament}</button>
                             </li>
                         ))
                     }
+                        <button onClick={handleOnDelete} className={style.Delete}>Delete</button>
                 </div>
-                <button onClick={handleOnSubmit}>Filter</button>
+                <button className={style.FilterButton} onClick={handleOnSubmit}>Filter</button>
             </ul>
         </>
     )

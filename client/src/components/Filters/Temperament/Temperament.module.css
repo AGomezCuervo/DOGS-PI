@@ -37,5 +37,62 @@ ul li:hover .Dropmenu {
 
 .TemperamentsContainer {
     display: grid;
-    grid-template-columns: repeat(6,1fr);
+    gap: .3rem;
+    grid-template-columns: repeat(7,1fr);
+}
+
+.TemperamentsContainer button {
+    font-family: 'Montserrat-Bold';
+    color: #0C3831;
+    width: 7.8rem;
+    height: 2.2rem;
+    border: solid #0C3831 .1rem;
+    border-radius: .2rem;
+    background-color: white;
+    word-wrap: break-word;
+    cursor: pointer;
+    transition: .2s;
+    font-size: .8rem;
+}
+
+.TemperamentsContainer button:hover {
+    color: white;
+    background-color: #E6BC40;
+}
+
+.TemperamentsContainer button:active {
+    background-color: #E6A440;
+}
+
+.TemperamentsContainer .Pressed {
+    background-color: #E6BC40;
+    color: white;
+}
+
+.TemperamentsContainer .Delete {
+    grid-column-end: span 2;
+    width: auto;
+    color: white;
+    background-color: #E6BC40;
+    font-size: 1.1rem;
+}
+
+.TemperamentsContainer .Delete:hover, .FilterButton:hover {
+    background-color: #E6A440;
+}
+
+.TemperamentsContainer .Delete:active, .FilterButton:active {
+    background-color: #E6BC40;
+}
+
+.FilterButton { 
+    background-color: #E6BC40;
+    grid-column-end: span 2;
+    font-family: 'Montserrat-ExtraBold';
+    color: white;
+    border: solid #0C3831 .1rem;
+    background-color: #E6BC40;
+    height: 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
 }

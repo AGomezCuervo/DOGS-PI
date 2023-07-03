@@ -7,3 +7,11 @@
     padding: 0 3%;
     padding-top: 10rem;
 }
+
+.Error {
+    font-family: "Montserrat-Medium";
+    text-align: center;
+    color: #d93025;
+    font-size: 1.5rem;
+    grid-column: 2;
+}

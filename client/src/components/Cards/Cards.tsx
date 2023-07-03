@@ -46,6 +46,10 @@ const Cards: React.FC = () => {
             image={dog.image}
           />
         ))}
+
+        {
+          currentDogs.length < 1 && <p className={style.Error}>There is no dogs</p>
+        }
       </div>
 
       <Pagination

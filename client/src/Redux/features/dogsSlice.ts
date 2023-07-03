@@ -100,7 +100,6 @@ const dogsSlice = createSlice({
     initialState,
     reducers: {
 
-
       sortFromAtoZ: (state) => {
          state.dogs = sortAtoZ(state.dogs);
       },
