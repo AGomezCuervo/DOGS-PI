@@ -100,6 +100,9 @@ const dogsSlice = createSlice({
     initialState,
     reducers: {
 
+      activeFilters: (state, action: {payload: {name: keyof typeof state.filters, value: any}}) => {
+         state.filters[action.payload.name] = action.payload.value
+      },
       sortFromAtoZ: (state) => {
          state.dogs = sortAtoZ(state.dogs);
       },
@@ -122,6 +125,9 @@ const dogsSlice = createSlice({
          
          state.dogs = filteredDogs;
          
+      },
+      clearDog: (state) => {
+         state.dog = undefined;
       }
     },
     extraReducers: (builder) => {
@@ -129,10 +135,6 @@ const dogsSlice = createSlice({
         .addCase(fetchAllDogs.pending, (state) => {
            state.status = PENDING;
             state.dogs = sortAtoZ(state.dogs);
-            state.filters.breed.atoZ = false;
-            state.filters.breed.ztoA = false;
-            state.filters.weight.heavier = false;
-            state.filters.weight.lighter = false;
             state.error = "";
         })
         .addCase(fetchAllDogs.fulfilled, (state, action) => {
@@ -185,7 +187,7 @@ const dogsSlice = createSlice({
 
 export default dogsSlice.reducer;
 export { fetchAllDogs, fetchDogByName, fetchDogById, fetchAllDBDogs};
-export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA, sortByTemperament} = dogsSlice.actions;
+export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA, sortByTemperament, activeFilters, clearDog} = dogsSlice.actions;
 export const selectAllDogs = (state: RootState) => state.dogs.dogs;
 export const selectStatus = (state: RootState) => state.dogs.status;
 export const selectDog = (state: RootState) => state.dogs.dog;

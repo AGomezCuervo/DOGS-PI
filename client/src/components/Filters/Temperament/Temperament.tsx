@@ -3,12 +3,15 @@ import temperamentIcon from "../../../assets/Icons/temperament_icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTemperaments, selectAllTemperaments, selectSomeTemperaments, setSelectTemperament } from "../../../Redux/features/temperamentsSlice";
 import { AppDispatch } from "../../../Redux/store";
-import { fetchAllDogs, sortByTemperament } from "../../../Redux/features/dogsSlice";
+import { activeFilters, fetchAllDogs, selectFilters, sortByTemperament } from "../../../Redux/features/dogsSlice";
+import { useEffect } from "react";
 
 function Temperament() {
     const temperaments = useSelector(selectAllTemperaments);
     const dispatch:AppDispatch = useDispatch();
     const selectedTemperaments = useSelector(selectSomeTemperaments);
+    const filters = useSelector(selectFilters)
+    const {temperament} = filters
 
     const handleOnClick = (event:React.MouseEvent<HTMLButtonElement>) => {
         const name = (event.target as HTMLButtonElement).name;
@@ -30,9 +33,15 @@ function Temperament() {
         dispatch(deleteTemperaments())
     }
 
+    useEffect(() => {
+        if(selectedTemperaments.length === 0) {
+            dispatch(activeFilters({name: "temperament", value: false}))
+        }
+    })
+
     return (
         <>
-            <div className={style.Filter}>
+            <div className={temperament ? `${style.Filter} ${style.Active}`: style.Filter}>
                 <img src={temperamentIcon} alt="" />
                 <h3>Temperament</h3>
             </div>

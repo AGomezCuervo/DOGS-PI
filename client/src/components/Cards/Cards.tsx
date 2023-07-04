@@ -3,7 +3,7 @@ import Card from "../Card/Card";
 import style from "./Cards.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
-import { Dog, fetchAllDogs, selectAllDogs } from "../../Redux/features/dogsSlice";
+import { Dog, fetchAllDogs, selectAllDogs, selectError } from "../../Redux/features/dogsSlice";
 import { fetchAllTemperaments, selectAllTemperaments } from "../../Redux/features/temperamentsSlice";
 import Pagination from "../Pagination/Pagination";
 import { selectCurrentPage } from "../../utils/utilsSlice";
@@ -14,6 +14,7 @@ const Cards: React.FC = () => {
   const dogs = useSelector(selectAllDogs);
   const currentPage = useSelector(selectCurrentPage);
   const [dogsPerPage, setDogsPerPage] = useState(8);
+  const error = useSelector(selectError);
 
   const lastDogIndex = currentPage * dogsPerPage;
   const firstDogIndex = lastDogIndex - dogsPerPage;
@@ -48,7 +49,7 @@ const Cards: React.FC = () => {
         ))}
 
         {
-          currentDogs.length < 1 && <p className={style.Error}>There is no dogs</p>
+          error && <p className={style.Error}>{error}</p>
         }
       </div>
 

@@ -96,3 +96,13 @@ ul li:hover .Dropmenu {
     font-size: 1.2rem;
     cursor: pointer;
 }
+
+.Filter {
+    padding: .2rem;
+    border: .2rem solid transparent;
+}
+
+.Filter.Active {
+    border: .2rem solid #64B494;
+    border-radius: .3rem;
+}

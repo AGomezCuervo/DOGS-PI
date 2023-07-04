@@ -1,11 +1,8 @@
-.BGContainer {
-
-}
 
 .Container {
     margin: 0 auto;
     margin-top: 1rem;
-    width: 50%;
+    width: 60rem;
     background-color: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border: 1px solid #B0ADAD;
@@ -16,8 +13,12 @@
     position: relative;
 }
 
-Form {
-    z-index: 1;
+.Container h1 {
+    display: block;
+    text-align: center;
+    font-family: "Montserrat-ExtraBold";
+    font-size: 3rem;
+    color: #0C3831;
 }
 .Option label {
     display: block;
@@ -62,9 +63,10 @@ Form {
 }
 
 .ImageContainer {
-    height: 20rem;
-    width: 20rem;
+    height: 19.5rem;
+    width: 30rem;
     margin: 0 auto;
+    border: .1rem solid #0C3831;
 }
 
 .ImageContainer img {
@@ -108,3 +110,54 @@ Form {
     background-color: #E6BC40;
 }
 
+.TemperamentsContainer {
+    display: grid;
+    gap: .3rem;
+    grid-template-columns: repeat(7,1fr);
+}
+
+.TemperamentsContainer button {
+    display: inline;
+    font-family: 'Montserrat-Bold';
+    color: #0C3831;
+    border: solid #0C3831 .1rem;
+    border-radius: .2rem;
+    background-color: white;
+    word-wrap: break-word;
+    cursor: pointer;
+    transition: .2s;
+    font-size: .8rem;
+    margin: 0;
+    width: 7.8rem;
+    height: 2.2rem;
+}
+
+.TemperamentsContainer button:hover {
+    color: white;
+    background-color: #E6BC40;
+}
+
+.TemperamentsContainer button:active {
+    background-color: #E6A440;
+}
+
+.TemperamentsContainer .Pressed {
+    background-color: #E6BC40;
+    color: white;
+}
+
+.TemperamentsContainer .Delete {
+    grid-column-end: span 2;
+    width: auto;
+    color: white;
+    background-color: #E6BC40;
+    font-size: 1.1rem;
+}
+
+.TemperamentsContainer .Delete:hover {
+    background-color: #E6A440;
+}
+
+.TemperamentsContainer .Delete:active {
+    background-color: #E6BC40;
+}

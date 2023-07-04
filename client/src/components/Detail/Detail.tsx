@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import style from "./Detail.module.css";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDogById, selectDog } from "../../Redux/features/dogsSlice";
+import { clearDog, fetchDogById, selectDog } from "../../Redux/features/dogsSlice";
 import { AppDispatch } from "../../Redux/store";
 import lifeSpanIcon from "../../assets/Icons/lifeSpan_icon.png";
 import heightIcon from "../../assets/Icons/height_icon.png";
@@ -11,9 +11,15 @@ import weightIcon from "../../assets/Icons/weight_icon.png"
 
 const Detail = () => {
     const {id} = useParams();
+    const navigate = useNavigate()
     const dog = useSelector(selectDog);
-    const dispatch: AppDispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch();
     const {name, height, weight, life_span, temperaments, image} = dog ?? {};
+
+    const handleClick = () =>{
+        navigate(-1)
+        dispatch(clearDog())
+    }
 
     useEffect(() => {
         dispatch(fetchDogById(id));
@@ -23,7 +29,7 @@ const Detail = () => {
         <div className={style.BGContainer}>
             <div className={style.Wave}>
                 <svg viewBox="0 100 1440 320">
-                    <path fill="#197667" fill-opacity="1" 
+                    <path fill="#197667" 
                         d="M0,288L80,288C160,288,320,288,480,266.7C640,245,800,203,960,202.7C1120,203,1280,
                         245,1360,266.7L1440,288L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z">
                     </path>
@@ -67,9 +73,9 @@ const Detail = () => {
                         </div>
                     </div>
 
-                    <Link to={"/"}>
-                        <button>Go Back</button>
-                    </Link>
+                    
+                        <button onClick={handleClick}>Go Back</button>
+                    
                 </div>
             </div>
         </div>

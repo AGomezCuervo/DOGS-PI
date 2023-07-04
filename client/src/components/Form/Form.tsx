@@ -4,6 +4,9 @@ import axios from "axios";
 import { CREATE_NEW_DOG } from "../../utils/constants";
 import { validations } from "./validations";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllTemperaments, selectAllTemperaments } from "../../Redux/features/temperamentsSlice";
+import { AppDispatch } from "../../Redux/store";
 
 export interface ErrorsInput {
     name: string;
@@ -11,7 +14,7 @@ export interface ErrorsInput {
     weight: string;
     life_span: string;
     image: string;
-    temperaments: string[];
+    temperaments: string;
 }
 
 export interface Input {
@@ -30,7 +33,9 @@ export interface Input {
 
 const Form =  () => {
 
-    const [allowSubmit, setAllowSubmit] = useState(true)
+    const [allowSubmit, setAllowSubmit] = useState(true);
+    const temperaments = useSelector(selectAllTemperaments);
+    const dispatch:AppDispatch = useDispatch()
 
     const [input, setInput] = useState<Input>({
         name: "",
@@ -50,8 +55,33 @@ const Form =  () => {
         weight: "",
         life_span: "",
         image: "",
-        temperaments: []
+        temperaments: ""
     })
+
+    const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        const name = (event.target as HTMLButtonElement).name;
+        console.log("me presionaron");
+      
+        if (!input.temperaments.includes(name)) {
+          setInput((prevState) => ({
+            ...prevState,
+            temperaments: [...prevState.temperaments, name],
+          }));
+        } else {
+          setInput((prevState) => ({
+            ...prevState,
+            temperaments: prevState.temperaments.filter(
+              (element) => element !== name
+            ),
+          }));
+        }
+      };
+
+    const handleOnDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        input.temperaments = [];
+    }
 
     const handleOnChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name;
@@ -61,8 +91,8 @@ const Form =  () => {
         
     }
 
-    const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
+    const handleOnSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
         axios.post(CREATE_NEW_DOG, input)
         .then(response => {
             console.log(response);
@@ -75,7 +105,10 @@ const Form =  () => {
     }
 
     useEffect(() => {
-     setAllowSubmit(Object.values(input).every(item => item !== "") && Object.values(errors).every(error => error === ""))   
+        dispatch(fetchAllTemperaments())
+        setAllowSubmit(
+            Object.values(input).every(item => item !== "") &&
+            Object.values(errors).every(error => error === ""))   
     }, [errors, input])
 
 
@@ -83,7 +116,7 @@ const Form =  () => {
         <div className={style.BGContainer}>
             <div className={style.Wave}>
                 <svg viewBox="0 100 1440 320">
-                    <path fill="#197667" fill-opacity="1" 
+                    <path fill="#197667" 
                         d="M0,288L80,288C160,288,320,288,480,266.7C640,245,800,203,960,202.7C1120,203,1280,
                         245,1360,266.7L1440,288L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z">
                     </path>
@@ -92,7 +125,8 @@ const Form =  () => {
             <Link to={"/"}>
                 <button className={style.GoBack}>Go Back</button>
             </Link>
-            <form className={style.Container} onSubmit={handleOnSubmit}>
+            <form className={style.Container}>
+                <h1>Create Dog</h1>
                 <div>
                     <div className={style.Option} >
                         <label htmlFor="name">Breed</label>
@@ -120,12 +154,12 @@ const Form =  () => {
                     <div className={`${style.Option} ${style.DoubleOption}`}>
                         <div className={style.Option}>
                             <label htmlFor="min_weight:">Min weight</label>
-                            <input id="min_weight:" name="min_weight:" type="number" onChange={handleOnChange} min="0" />
+                            <input id="min_weight" name="min_weight" type="number" onChange={handleOnChange} min="0" />
                         </div>
 
                         <div className={style.Option}>
                             <label htmlFor="max_weight:">Max weight</label>
-                            <input id="max_weight:" name="max_weight:" type="number" onChange={handleOnChange} min="0"/>
+                            <input id="max_weight" name="max_weight" type="number" onChange={handleOnChange} min="0"/>
                         </div>
                     </div>
                     {errors.weight && <p>{errors.weight}</p>}
@@ -146,19 +180,29 @@ const Form =  () => {
                 </div>
                 <div>
                     <div className={style.Option}>
+                        <div className={style.TemperamentsContainer}>
+                            {
+                                temperaments?.map((temperament, index) => (
+                                    <button key={index} className={input.temperaments.includes(temperament)? style.Pressed : ""} name={temperament} onClick={handleOnClick}>{temperament}</button>
+                                ))
+                            }
+                        <button onClick={handleOnDelete} className={style.Delete}>Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div className={style.Option}>
                         <label htmlFor="image">Image</label>
                         <input id="image" name="image" type="text" onChange={handleOnChange} />
                     </div>
-                    {errors.image && <p>{errors.image}</p>}
+                        {errors.image && <p>{errors.image}</p>}
 
                     <div className={style.ImageContainer}>
-                        <img src={input.image} alt="img" />
+                        <img src={input.image ? input.image: ""} alt="" />
                     </div>
                 </div>
 
-                <button type="submit" disabled={!allowSubmit}> Create Dog</button>
-
-
+                <button onClick={handleOnSubmit} disabled={!allowSubmit}> Create Dog</button>
             </form>
         </div>
     )
