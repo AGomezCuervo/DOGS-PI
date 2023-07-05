@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Dog } from "../../Redux/features/dogsSlice";
 const Card: React.FC<Dog> =  (props) => {
   const {name, image, temperaments, weight, id} = props
+  
+
     return (
 
         <Link to={`/detail/${id}`} className={style.Link}>

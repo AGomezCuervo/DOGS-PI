@@ -81,7 +81,6 @@ export const DogById = async (params:string) => {
                         }
                 }
                 });
-            console.log(dog);
             
             if (!dog) throw new Error(`No existe el id: ${id}`)
             return dogCleanerDB(dog)

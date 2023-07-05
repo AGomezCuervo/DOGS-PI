@@ -76,6 +76,12 @@
     margin: 0 auto;
 }
 
+.ImageContainer p {
+    display: block;
+    color: #0C3831;
+    margin: 25% auto;
+}
+
 .Wave {
     position: absolute;
     left: 0;

@@ -20,6 +20,7 @@ export interface Dog {
    life_span: string;
    averageWeight: string;
    averageHeight: string;
+   breed_group: string;
    image: string;
    temperaments: string[];
 }
@@ -161,8 +162,6 @@ const dogsSlice = createSlice({
       },
       putOriginalAsCopy: (state) => {
          state.dogs = state.copyDogs;
-         console.log("Cambie");
-         
       }
     },
     extraReducers: (builder) => {

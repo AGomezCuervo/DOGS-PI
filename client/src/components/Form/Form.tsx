@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllTemperaments, selectAllTemperaments } from "../../Redux/features/temperamentsSlice";
 import { AppDispatch } from "../../Redux/store";
 import successIcon from "../../assets/Icons/bredFor_icon.png";
+import rejectedIcon from "../../assets/Icons/rejected_icon.png";
+import { validationTemperaments } from "./validations/validationTemperaments";
 
 export interface ErrorsInput {
     name: string;
@@ -65,24 +67,29 @@ const Form =  () => {
         event.preventDefault();
         const name = (event.target as HTMLButtonElement).name;
       
+        let updatedTemperaments:string[] = [];
+      
         if (!input.temperaments.includes(name)) {
-          setInput((prevState) => ({
-            ...prevState,
-            temperaments: [...prevState.temperaments, name],
-          }));
+          updatedTemperaments = [...input.temperaments, name];
         } else {
-          setInput((prevState) => ({
-            ...prevState,
-            temperaments: prevState.temperaments.filter(
-              (element) => element !== name
-            ),
-          }));
+          updatedTemperaments = input.temperaments.filter(
+            (element) => element !== name
+          );
         }
+      
+        setInput((prevState) => ({
+          ...prevState,
+          temperaments: updatedTemperaments,
+        }));
+      
+        setError(validationTemperaments(updatedTemperaments, errors));
       };
 
     const handleOnDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        input.temperaments = [];
+        setInput({...input, temperaments: []});
+        setError(validationTemperaments([], errors));
+        
     }
 
     const handleOnChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -111,7 +118,7 @@ const Form =  () => {
     useEffect(() => {
         setAllowSubmit(
             Object.values(input).every(item => item !== "") &&
-            Object.values(errors).every(error => error === ""))   
+            Object.values(errors).every(error => error === ""))
     }, [errors, input, dispatch])
 
 
@@ -125,17 +132,14 @@ const Form =  () => {
                     </path>
                 </svg>
             </div>
-            <Link to={"/home"}>
-                <button className={style.GoBack}>Go Back</button>
-            </Link>
-
             {
                 submitMessage &&
                 <div>
                     <div className={style.AdvertiseContainer}></div>
                         <div className={style.Advertise}>
                             <h2>{submitMessage}</h2>
-                            <img src={successIcon} alt=""/>
+                            
+                            <img src={submitMessage === "This Dogs already exists"? rejectedIcon: successIcon} alt=""/>
                             <div className={style.ButtonsContainer}>
                                 <a href="/home">Home</a>
                                 <button onClick={() => {
@@ -149,84 +153,97 @@ const Form =  () => {
                         </div>
                 </div>
             }
-            <form className={style.Container}>
-                <h1>Create Dog</h1>
-                <div>
-                    <div className={style.Option} >
-                        <label htmlFor="name">Breed</label>
-                        <input id="name" name="name" type="text" onChange={handleOnChange} />
+
+            <div>
+
+                <Link to={"/home"}>
+                    <button className={style.GoBack}>Go Back</button>
+                </Link>
+
+                <form className={style.Container}>
+                    <h1>Create Dog</h1>
+                    <div>
+                        <div className={style.Option} >
+                            <label htmlFor="name">Breed</label>
+                            <input id="name" name="name" type="text" onChange={handleOnChange} />
+                        </div>
+                        {errors.name && <p>{errors.name}</p>}
                     </div>
-                    {errors.name && <p>{errors.name}</p>}
-                </div>
 
-                <div>
-                    <div className={`${style.Option} ${style.DoubleOption}`}>
-                        <div className={ style.Option }>
-                            <label htmlFor="min_height">Min height</label>
-                            <input id="min_height" name="min_height" type="number" onChange={handleOnChange} min="0" />
+                    <div>
+                        <div className={`${style.Option} ${style.DoubleOption}`}>
+                            <div className={ style.Option }>
+                                <label htmlFor="min_height">Min height</label>
+                                <input id="min_height" name="min_height" type="text" onChange={handleOnChange} min="0" />
+                            </div>
+
+                            <div className={style.Option}>
+                                <label htmlFor="max_height">Max height</label>
+                                <input id="max_height" name="max_height" type="text" onChange={handleOnChange} min="0" />
+                            </div>
                         </div>
+                        {errors.height && <p>{errors.height}</p>}
+                    </div>
 
+                    <div>
+                        <div className={`${style.Option} ${style.DoubleOption}`}>
+                            <div className={style.Option}>
+                                <label htmlFor="min_weight:">Min weight</label>
+                                <input id="min_weight" name="min_weight" type="text" onChange={handleOnChange} min="0" />
+                            </div>
+
+                            <div className={style.Option}>
+                                <label htmlFor="max_weight:">Max weight</label>
+                                <input id="max_weight" name="max_weight" type="text" onChange={handleOnChange} min="0"/>
+                            </div>
+                        </div>
+                        {errors.weight && <p>{errors.weight}</p>}
+                    </div>
+
+                    <div>
+                        <div className={`${style.Option} ${style.DoubleOption}`}>
+                            <div className={style.Option}>
+                                <label htmlFor="min_life_span">min lifespan</label>
+                                <input id="min_life_span" name="min_life_span" type="text" onChange={handleOnChange} min="0" />
+                            </div>
+                            <div className={style.Option}>
+                                <label htmlFor="max_life_span">max lifespan</label>
+                                <input id="max_life_span" name="max_life_span" type="text" onChange={handleOnChange} min="0" />
+                            </div>
+                        </div>
+                        {errors.life_span && <p>{errors.life_span}</p>}
+                    </div>
+                    <div>
                         <div className={style.Option}>
-                            <label htmlFor="max_height">Max height</label>
-                            <input id="max_height" name="max_height" type="number" onChange={handleOnChange} min="0" />
+                            <div className={style.TemperamentsContainer}>
+                                {
+                                    temperaments?.map((temperament, index) => (
+                                        <button key={index} className={input.temperaments.includes(temperament)? style.Pressed : ""} name={temperament} onClick={handleOnClick}>{temperament}</button>
+                                    ))
+                                }
+                            <button onClick={handleOnDelete} className={style.Delete}>Delete</button>
+                            </div>
+                            {errors.temperaments && <p>{errors.temperaments}</p>}
                         </div>
                     </div>
-                    {errors.height && <p>{errors.height}</p>}
-                </div>
+                    <div>
+                        <div className={style.Option}>
+                            <label htmlFor="image">Image</label>
+                            <input id="image" name="image" type="text" onChange={handleOnChange} />
+                        </div>
+                            {errors.image && <p>{errors.image}</p>}
 
-                <div>
-                    <div className={`${style.Option} ${style.DoubleOption}`}>
-                        <div className={style.Option}>
-                            <label htmlFor="min_weight:">Min weight</label>
-                            <input id="min_weight" name="min_weight" type="number" onChange={handleOnChange} min="0" />
-                        </div>
-
-                        <div className={style.Option}>
-                            <label htmlFor="max_weight:">Max weight</label>
-                            <input id="max_weight" name="max_weight" type="number" onChange={handleOnChange} min="0"/>
-                        </div>
-                    </div>
-                    {errors.weight && <p>{errors.weight}</p>}
-                </div>
-
-                <div>
-                    <div className={`${style.Option} ${style.DoubleOption}`}>
-                        <div className={style.Option}>
-                            <label htmlFor="min_life_span">min lifespan</label>
-                            <input id="min_life_span" name="min_life_span" type="number" onChange={handleOnChange} min="0" />
-                        </div>
-                        <div className={style.Option}>
-                            <label htmlFor="max_life_span">max lifespan</label>
-                            <input id="max_life_span" name="max_life_span" type="number" onChange={handleOnChange} min="0" />
-                        </div>
-                    </div>
-                    {errors.life_span && <p>{errors.life_span}</p>}
-                </div>
-                <div>
-                    <div className={style.Option}>
-                        <div className={style.TemperamentsContainer}>
-                            {
-                                temperaments?.map((temperament, index) => (
-                                    <button key={index} className={input.temperaments.includes(temperament)? style.Pressed : ""} name={temperament} onClick={handleOnClick}>{temperament}</button>
-                                ))
+                        <div className={style.ImageContainer}>
+                            {input.image && errors.image === "" ?
+                                <img src={input.image} alt="Your Image"/>
+                            : <p>Your Image</p>
                             }
-                        <button onClick={handleOnDelete} className={style.Delete}>Delete</button>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <div className={style.Option}>
-                        <label htmlFor="image">Image</label>
-                        <input id="image" name="image" type="text" onChange={handleOnChange} />
-                    </div>
-                        {errors.image && <p>{errors.image}</p>}
-
-                    <div className={style.ImageContainer}>
-                        <img src={input.image ? input.image: ""} alt="" />
-                    </div>
-                </div>
-                    <button onClick={handleOnSubmit} disabled={!allowSubmit}> Create Dog</button>
-            </form>
+                        <button onClick={handleOnSubmit} disabled={!allowSubmit || input.temperaments.length === 0}> Create Dog</button>
+                        {!allowSubmit ? <p>Please fill the all the fields</p>: <p></p>}
+                </form>
+            </div>
         </div>
     )
 } 

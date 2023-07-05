@@ -50,6 +50,7 @@ const Cards: React.FC = () => {
             weight={dog.weight}
             life_span={dog.life_span}
             averageHeight={dog.averageHeight}
+            breed_group= {dog.breed_group}
             averageWeight={dog.averageWeight}
             temperaments={dog.temperaments}
             image={dog.image}
