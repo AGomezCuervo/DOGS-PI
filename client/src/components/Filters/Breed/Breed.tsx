@@ -2,7 +2,7 @@ import style from "./Breed.module.css";
 import breedIcon from "../../../assets/Icons/breed_icon.png";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { activeFilters, fetchAllDogs, selectFilters, sortFromAtoZ, sortFromZtoA } from "../../../Redux/features/dogsSlice";
+import { activeFilters, fetchAllDogs, putOriginalAsCopy, selectFilters, sortFromAtoZ, sortFromZtoA } from "../../../Redux/features/dogsSlice";
 import { AppDispatch } from "../../../Redux/store";
 
 function Breed() {
@@ -24,6 +24,7 @@ function Breed() {
                     setSortZtoA(false);
                 } else {
                     setSortAtoZ(false);
+                    dispatch(putOriginalAsCopy())
                 }
                 break;
             case "sortFromZ":
@@ -33,6 +34,7 @@ function Breed() {
                     setSortAtoZ(false)
                 } else {
                     setSortZtoA(false);
+                    dispatch(putOriginalAsCopy())
                 }
                 break;
             default:

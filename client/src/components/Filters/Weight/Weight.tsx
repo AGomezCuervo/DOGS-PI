@@ -2,7 +2,7 @@ import style from "./Weight.module.css";
 import weightIcon from "../../../assets/Icons/weight_icon.png";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { activeFilters, fetchAllDogs, selectFilters, sortFromHeavier, sortFromLighter, } from "../../../Redux/features/dogsSlice";
+import { activeFilters, fetchAllDogs, putOriginalAsCopy, selectFilters, sortFromHeavier, sortFromLighter, } from "../../../Redux/features/dogsSlice";
 import { AppDispatch } from "../../../Redux/store";
 
 function Weight() {
@@ -24,6 +24,7 @@ function Weight() {
                     setSortLightest(false);
                 } else {
                     setSortHeaviest(false);
+                    dispatch(putOriginalAsCopy());
                 }
                 break;
             case "sortLighter":
@@ -32,7 +33,8 @@ function Weight() {
                     setSortLightest(true);
                     setSortHeaviest(false);
                 } else {
-                    setSortLightest(false)
+                    setSortLightest(false);
+                    dispatch(putOriginalAsCopy());
                 }
                 break;
             default:

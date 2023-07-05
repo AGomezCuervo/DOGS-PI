@@ -3,15 +3,15 @@ import temperamentIcon from "../../../assets/Icons/temperament_icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTemperaments, selectAllTemperaments, selectSomeTemperaments, setSelectTemperament } from "../../../Redux/features/temperamentsSlice";
 import { AppDispatch } from "../../../Redux/store";
-import { activeFilters, fetchAllDogs, selectFilters, sortByTemperament } from "../../../Redux/features/dogsSlice";
-import { useEffect } from "react";
+import { activeFilters, fetchAllDogs, putOriginalAsCopy, selectFilters, sortByTemperament } from "../../../Redux/features/dogsSlice";
+import { useEffect, useState } from "react";
 
 function Temperament() {
     const temperaments = useSelector(selectAllTemperaments);
     const dispatch:AppDispatch = useDispatch();
     const selectedTemperaments = useSelector(selectSomeTemperaments);
-    const filters = useSelector(selectFilters)
-    const {temperament} = filters
+    const filters = useSelector(selectFilters);
+    const {temperament} = filters;
 
     const handleOnClick = (event:React.MouseEvent<HTMLButtonElement>) => {
         const name = (event.target as HTMLButtonElement).name;

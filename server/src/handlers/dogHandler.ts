@@ -20,7 +20,7 @@ export const addDBDogs: RequestHandler = async (req,res) => {
         await addDogs(req.body)   
         res.status(200).json({message: "Dog created successfully"})
     } catch (error) {
-        res.status(500).json(error)
+        res.status(400).json({message: "This Dogs already exists"})
     }
 }
 

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllTemperaments, selectAllTemperaments } from "../../Redux/features/temperamentsSlice";
 import { AppDispatch } from "../../Redux/store";
+import successIcon from "../../assets/Icons/bredFor_icon.png";
 
 export interface ErrorsInput {
     name: string;
@@ -35,7 +36,7 @@ const Form =  () => {
 
     const [allowSubmit, setAllowSubmit] = useState(true);
     const temperaments = useSelector(selectAllTemperaments);
-    const dispatch:AppDispatch = useDispatch()
+    const dispatch:AppDispatch = useDispatch();
 
     const [input, setInput] = useState<Input>({
         name: "",
@@ -57,6 +58,8 @@ const Form =  () => {
         image: "",
         temperaments: ""
     })
+
+    const [submitMessage, setSubmitMessage] = useState("")
 
     const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -94,17 +97,18 @@ const Form =  () => {
         event.preventDefault();
         axios.post(CREATE_NEW_DOG, input)
         .then(response => {
-            console.log(response);
-            
+            setSubmitMessage(response.data.message);
         })
         .catch(error => {
-            console.log(error);
-            
+            setSubmitMessage(error.response.data.message);
         })
     }
 
     useEffect(() => {
         dispatch(fetchAllTemperaments())
+    }, [dispatch])
+
+    useEffect(() => {
         setAllowSubmit(
             Object.values(input).every(item => item !== "") &&
             Object.values(errors).every(error => error === ""))   
@@ -124,6 +128,27 @@ const Form =  () => {
             <Link to={"/home"}>
                 <button className={style.GoBack}>Go Back</button>
             </Link>
+
+            {
+                submitMessage &&
+                <div>
+                    <div className={style.AdvertiseContainer}></div>
+                        <div className={style.Advertise}>
+                            <h2>{submitMessage}</h2>
+                            <img src={successIcon} alt=""/>
+                            <div className={style.ButtonsContainer}>
+                                <a href="/home">Home</a>
+                                <button onClick={() => {
+                                    window.scrollTo({top: 0, left: 0, behavior: "auto"});
+                                    window.location.reload();
+                                }}>
+                                    Try Again
+                                </button>
+                            </div>
+
+                        </div>
+                </div>
+            }
             <form className={style.Container}>
                 <h1>Create Dog</h1>
                 <div>
@@ -200,8 +225,7 @@ const Form =  () => {
                         <img src={input.image ? input.image: ""} alt="" />
                     </div>
                 </div>
-
-                <button onClick={handleOnSubmit} disabled={!allowSubmit}> Create Dog</button>
+                    <button onClick={handleOnSubmit} disabled={!allowSubmit}> Create Dog</button>
             </form>
         </div>
     )

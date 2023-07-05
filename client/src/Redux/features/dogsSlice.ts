@@ -27,15 +27,16 @@ export interface Dog {
 interface DogsState {
    dogs: Dog[];
    dog?: Dog;
+   copyDogs: Dog[];
    filters: {
       weight: {
-         lighter: boolean,
-         heavier: boolean
+         lighter: boolean;
+         heavier: boolean;
       },
-      temperament: boolean,
+      temperament: boolean;
       breed: {
-         atoZ: boolean,
-         ztoA: boolean
+         atoZ: boolean;
+         ztoA: boolean;
       }
    }
    status: string;
@@ -44,6 +45,7 @@ interface DogsState {
 
 const initialState: DogsState = {
    dogs: [],
+   copyDogs:[],
    filters: {
       weight: {
          lighter: false,
@@ -148,17 +150,25 @@ const dogsSlice = createSlice({
          })
          
          state.dogs = filteredDogs;
+         if(filteredDogs.length === 0) state.error = `No found dogs with temperaments: ${temperamentsArray.join(", ")}...`
          
       },
       clearDog: (state) => {
          state.dog = undefined;
+      },
+      setCopyDog: (state) => {
+         state.copyDogs = state.dogs
+      },
+      putOriginalAsCopy: (state) => {
+         state.dogs = state.copyDogs;
+         console.log("Cambie");
+         
       }
     },
     extraReducers: (builder) => {
     builder
         .addCase(fetchAllDogs.pending, (state) => {
            state.status = PENDING;
-            state.dogs = sortAtoZ(state.dogs);
             state.error = "";
         })
         .addCase(fetchAllDogs.fulfilled, (state, action) => {
@@ -214,9 +224,10 @@ const dogsSlice = createSlice({
 
 export default dogsSlice.reducer;
 export { fetchAllDogs, fetchDogByName, fetchDogById, fetchAllDBDogs};
-export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA, sortByTemperament, activeFilters, clearDog} = dogsSlice.actions;
+export const {sortFromAtoZ, sortFromHeavier, sortFromLighter, sortFromZtoA, sortByTemperament, activeFilters, clearDog, setCopyDog, putOriginalAsCopy} = dogsSlice.actions;
 export const selectAllDogs = (state: RootState) => state.dogs.dogs;
 export const selectStatus = (state: RootState) => state.dogs.status;
 export const selectDog = (state: RootState) => state.dogs.dog;
 export const selectError = (state: RootState) => state.dogs.error;
 export const selectFilters = (state: RootState) => state.dogs.filters;
+export const selectCopyDogs = (state: RootState) => state.dogs.copyDogs;

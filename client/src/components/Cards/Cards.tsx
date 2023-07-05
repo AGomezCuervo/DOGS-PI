@@ -3,7 +3,7 @@ import Card from "../Card/Card";
 import style from "./Cards.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
-import { Dog, fetchAllDogs, selectAllDogs, selectError } from "../../Redux/features/dogsSlice";
+import { Dog, fetchAllDogs, selectAllDogs, selectCopyDogs, selectError, setCopyDog, putOriginalAsCopy } from "../../Redux/features/dogsSlice";
 import { fetchAllTemperaments, selectAllTemperaments } from "../../Redux/features/temperamentsSlice";
 import Pagination from "../Pagination/Pagination";
 import { selectCurrentPage } from "../../utils/utilsSlice";
@@ -15,6 +15,7 @@ const Cards: React.FC = () => {
   const currentPage = useSelector(selectCurrentPage);
   const [dogsPerPage, setDogsPerPage] = useState(8);
   const error = useSelector(selectError);
+  const copyDogs = useSelector(selectCopyDogs)
 
   const lastDogIndex = currentPage * dogsPerPage;
   const firstDogIndex = lastDogIndex - dogsPerPage;
@@ -25,9 +26,14 @@ const Cards: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchAllDogs());
-    dispatch(fetchAllTemperaments())
-    
-  }, [dispatch]);
+    dispatch(fetchAllTemperaments());
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(dogs.length > 0 && copyDogs.length === 0) dispatch(setCopyDog())
+    }, 1000)
+  },[dogs,copyDogs, dispatch]);
 
   return (
     <>

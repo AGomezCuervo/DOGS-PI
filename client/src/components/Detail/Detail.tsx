@@ -17,7 +17,7 @@ const Detail = () => {
     const {name, height, weight, life_span, temperaments, image} = dog ?? {};
 
     const handleClick = () =>{
-        navigate(-1)
+        navigate("/home")
         dispatch(clearDog())
     }
 
