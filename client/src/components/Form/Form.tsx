@@ -61,7 +61,6 @@ const Form =  () => {
     const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         const name = (event.target as HTMLButtonElement).name;
-        console.log("me presionaron");
       
         if (!input.temperaments.includes(name)) {
           setInput((prevState) => ({
@@ -109,7 +108,7 @@ const Form =  () => {
         setAllowSubmit(
             Object.values(input).every(item => item !== "") &&
             Object.values(errors).every(error => error === ""))   
-    }, [errors, input])
+    }, [errors, input, dispatch])
 
 
     return ( 
@@ -122,7 +121,7 @@ const Form =  () => {
                     </path>
                 </svg>
             </div>
-            <Link to={"/"}>
+            <Link to={"/home"}>
                 <button className={style.GoBack}>Go Back</button>
             </Link>
             <form className={style.Container}>

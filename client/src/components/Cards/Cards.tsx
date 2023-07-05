@@ -33,7 +33,9 @@ const Cards: React.FC = () => {
     <>
       <NavBar/>
       <div className={style.Container}>
-        { currentDogs.map((dog: Dog) => (
+        { 
+        error ? <p className={style.Error}>{error}</p> :
+        currentDogs.map((dog: Dog) => (
           <Card
             key={dog.id}
             id={dog.id}
@@ -47,10 +49,6 @@ const Cards: React.FC = () => {
             image={dog.image}
           />
         ))}
-
-        {
-          error && <p className={style.Error}>{error}</p>
-        }
       </div>
 
       <Pagination

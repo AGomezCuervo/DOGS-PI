@@ -33,7 +33,7 @@ export const addDogs = async (body: Body) => {
 
 }
 
-export const getDBdogs = async () => {
+export const getDBdogs = async (value: string) => {
     const dogs: Array<Dog> = await Dog.findAll({ 
         include: {
             model:Temperament,
@@ -43,20 +43,28 @@ export const getDBdogs = async () => {
                 }
         }
         });
+    if (value === "getAllDogs") {
+        return dogs
+    }
+    if(dogs.length === 0){
+        throw new Error("There is no dogs")
+    }
     return dogs
 }
 
 export const getAllDogs = async () => {
     try {
         const api = (await axios.get(URL)).data;
-        const db = await getDBdogs()
+        const db = await getDBdogs("getAllDogs")
         const apiDogs = allDogsCleanerApi(api);
         const dogsDB = await allDogsCleanerDB(db);
-        const newArray = [...dogsDB, ...apiDogs]
-        return newArray
+        const newArray = [...dogsDB, ...apiDogs];
+        
+        
+        return newArray;
 
     } catch (error) {
-        throw error
+        throw new Error("Problema")
     }
 }
 
@@ -73,11 +81,13 @@ export const DogById = async (params:string) => {
                         }
                 }
                 });
-            if (dog) return dogCleanerDB(dog)
-            throw new Error("este perro no existe")
+            console.log(dog);
+            
+            if (!dog) throw new Error(`No existe el id: ${id}`)
+            return dogCleanerDB(dog)
             
         } catch (error) {
-            throw new Error("este perro no existe")
+            throw new Error(`No existe el id: ${id}`)
         }
     }
 

@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { SerializedError, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios, { AxiosError } from "axios";
 import {
    GET_ALL_DOGS_URL,
    FULLFILLED,
@@ -39,7 +39,7 @@ interface DogsState {
       }
    }
    status: string;
-   error: string;
+   error: undefined | string;
 }
 
 const initialState: DogsState = {
@@ -56,7 +56,7 @@ const initialState: DogsState = {
       }
    },
    status: "idle",
-   error: "",
+   error: ""
 };
 
 const fetchAllDogs = createAsyncThunk("dogs/fetchAllDogs", async () => {
@@ -64,7 +64,13 @@ const fetchAllDogs = createAsyncThunk("dogs/fetchAllDogs", async () => {
       const data = (await axios.get(GET_ALL_DOGS_URL)).data;
       return data;
    } catch (error) {
-      throw new Error("Something went wrong");
+      let errorMessage = "Unknown error";
+      if (error instanceof AxiosError) {
+         if (error.response && error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+         }
+      }
+      throw new Error(errorMessage);
    }
 });
 
@@ -73,7 +79,13 @@ const fetchDogByName = createAsyncThunk("dogs/fetchDogByName", async (name:strin
       const data = (await axios.get(GET_DOG_SEARCH + name)).data;
       return data;
    } catch (error) {
-      throw new Error("Something went wrong")
+      let errorMessage = "Unknown error";
+      if (error instanceof AxiosError) {
+         if (error.response && error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+         }
+      }
+      throw new Error(errorMessage);
    }
 })
 
@@ -82,7 +94,13 @@ const fetchDogById = createAsyncThunk("dogs/fetchDogById", async (id:string | un
       const data = (await axios.get(GET_DOG_BY_ID + id)).data;
       return data;
    } catch (error) {
-      throw new Error("Something went wrong");
+      let errorMessage = "Unknown error";
+      if (error instanceof AxiosError) {
+         if (error.response && error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+         }
+      }
+      throw new Error(errorMessage);
    }
 })
 
@@ -91,7 +109,13 @@ const fetchAllDBDogs = createAsyncThunk("dogs/fetchAllDBDogs", async() => {
       const data = (await axios.get(GET_ALL_DB_DOGS)).data;
       return data;
    } catch (error) {
-      throw new Error("Something went wrong");
+      let errorMessage = "Unknown error";
+      if (error instanceof AxiosError) {
+         if (error.response && error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+         }
+      }
+      throw new Error(errorMessage);
    }
 })
 
@@ -140,9 +164,10 @@ const dogsSlice = createSlice({
         .addCase(fetchAllDogs.fulfilled, (state, action) => {
             state.dogs = action.payload;
             state.status = FULLFILLED;
+            state.error = "";
         })
-        .addCase(fetchAllDogs.rejected, (state) => {
-            state.error = "Error";
+        .addCase(fetchAllDogs.rejected, (state, action) => {
+            state.error = action.error.message;
             state.status = REJECTED;
          })
          .addCase(fetchDogByName.pending, (state) => {
@@ -153,9 +178,9 @@ const dogsSlice = createSlice({
             state.dogs = action.payload;
             state.error = ""
          })
-         .addCase(fetchDogByName.rejected, (state) => {
+         .addCase(fetchDogByName.rejected, (state, action) => {
             state.status = REJECTED;
-            state.error = "something went wrong"
+            state.error = action.error.message;
             state.dogs = [];
          })
          .addCase(fetchDogById.pending, (state) => {
@@ -164,23 +189,25 @@ const dogsSlice = createSlice({
          .addCase(fetchDogById.fulfilled, (state, action) => {
             state.status = FULLFILLED;
             state.dog = action.payload;
-            state.error = ""
+            state.error = "";
          })
-         .addCase(fetchDogById.rejected, (state) => {
+         .addCase(fetchDogById.rejected, (state, action) => {
             state.status = REJECTED;
-            state.error = "something went wrong";
+            state.error = action.error.message;
          })
          .addCase(fetchAllDBDogs.pending, (state) => {
             state.status = PENDING;
+            state.error = ""
          })
          .addCase(fetchAllDBDogs.fulfilled, (state, action) => {
             state.status = FULLFILLED;
             state.dogs = action.payload;
             state.error = ""
          })
-         .addCase(fetchAllDBDogs.rejected, (state) => {
+         .addCase(fetchAllDBDogs.rejected, (state,action) => {
             state.status = REJECTED;
-            state.error = "something went wrong"
+            state.error = action.error.message;
+            
          })
    },
 });
