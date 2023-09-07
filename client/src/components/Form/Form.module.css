@@ -2,7 +2,8 @@
 .Container {
     margin: 0 auto;
     margin-top: 1rem;
-    width: 60rem;
+    width: clamp(20rem, 80vw, 70rem);
+    padding: 0 1rem;
     background-color: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border: 1px solid #B0ADAD;
@@ -22,12 +23,24 @@
 }
 .Option label {
     display: block;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .Option {
-    width: fit-content;
+    display: block;
     margin: 0 auto;
     margin-bottom: 2rem;
+}
+
+.Option input {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.Option .Single {
+  width: auto;
 }
 
 .DoubleOption {
@@ -64,7 +77,8 @@
 
 .ImageContainer {
     height: 19.5rem;
-    width: 30rem;
+    width: clamp(20rem, 80vw, 40rem);
+    height: clamp(15rem, 70vw, 35rem);
     margin: 0 auto;
     border: .1rem solid #0C3831;
 }
@@ -118,12 +132,17 @@
 
 .TemperamentsContainer {
     display: grid;
-    gap: .3rem;
-    grid-template-columns: repeat(7,1fr);
+    gap: .4rem;
+    width: 100%;
+    max-height: 60rem;
+    overflow-y: scroll;
+    grid-template-columns: repeat(auto-fit, minmax(7.4rem, 1fr));
 }
 
 .TemperamentsContainer button {
-    display: inline;
+    justify-self: center;
+    display: block;
+    margin: 0 auto;
     font-family: 'Montserrat-Bold';
     color: #0C3831;
     border: solid #0C3831 .1rem;
@@ -134,7 +153,7 @@
     transition: .2s;
     font-size: .8rem;
     margin: 0;
-    width: 7.8rem;
+    width: 7.6rem;
     height: 2.2rem;
 }
 
@@ -154,7 +173,7 @@
 
 .TemperamentsContainer .Delete {
     grid-column-end: span 2;
-    width: auto;
+    width: 100%;
     color: white;
     background-color: #E6BC40;
     font-size: 1.1rem;

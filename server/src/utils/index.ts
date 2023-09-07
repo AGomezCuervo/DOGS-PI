@@ -94,7 +94,7 @@ export const allDogsCleanerApi = (data:ApiDog[]) => {
             breed_group,
             life_span,
             origin,
-            image: image.url,
+            image: image,
             temperaments
         };
     })

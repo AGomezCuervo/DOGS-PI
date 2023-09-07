@@ -2,8 +2,7 @@
     border-radius: .9rem .9rem .9rem .9rem;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     border: 1px solid #B0ADAD;
-    width: 30rem;
-    min-height: 29.5rem;
+    width: clamp(20rem, 30vw + 4rem, 30rem);
     color: #0C3831;
     position: relative;
     cursor: pointer;
@@ -16,7 +15,7 @@
 }
 
 .ImageContainer {
-    width: 30rem;
+    width: clamp(20rem, 30vw + 4rem, 30rem);
     height: 19.5rem;
     border-radius: .9rem .9rem 0 0;
     position: relative;
@@ -66,9 +65,8 @@
     align-items: center;
     height: 2rem;
     margin-right: 6%;
-    margin-bottom: .5rem;
     position: absolute;
-    bottom: 0;
+    bottom: -.2rem;
     right: 0;
 }
 

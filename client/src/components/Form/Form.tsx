@@ -165,7 +165,7 @@ const Form =  () => {
                     <div>
                         <div className={style.Option} >
                             <label htmlFor="name">Breed</label>
-                            <input id="name" name="name" type="text" onChange={handleOnChange} />
+                            <input className={style.Single} id="name" name="name" type="text" onChange={handleOnChange} />
                         </div>
                         {errors.name && <p>{errors.name}</p>}
                     </div>
@@ -229,7 +229,7 @@ const Form =  () => {
                     <div>
                         <div className={style.Option}>
                             <label htmlFor="image">Image</label>
-                            <input id="image" name="image" type="text" onChange={handleOnChange} />
+                            <input className={style.Single} id="image" name="image" type="text" onChange={handleOnChange} />
                         </div>
                             {errors.image && <p>{errors.image}</p>}
 

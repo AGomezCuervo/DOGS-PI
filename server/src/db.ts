@@ -3,22 +3,20 @@ import { Dog } from "./models/Dog";
 import { Temperament } from "./models/Temperament";
 import { Dog_Temperament } from "./models/Dog_Temperament";
 import * as dotenv from "dotenv"
-import { Dialect } from "sequelize";
 dotenv.config()
 
 
-const {DB_USERNAME, DB_PASSWORD, DB_PORT, DB_DIALECT, DB_HOST, DB_DATABASE }= process.env;
+const {DB_USERNAME, DB_PASSWORD, DB_PORT, DB_HOST, DB_DATABASE }= process.env;
 
 
 const sequelize = new Sequelize({
     dialect: "postgres",
     database: DB_DATABASE,
     host: DB_HOST,
-    port: Number(DB_PORT),
+  port: Number(DB_PORT),
     username: DB_USERNAME,
     password: DB_PASSWORD,
-    models: [
-        Dog,
+    models: [ Dog,
         Temperament,
         Dog_Temperament
     ],

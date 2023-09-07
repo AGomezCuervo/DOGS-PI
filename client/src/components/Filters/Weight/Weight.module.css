@@ -1,7 +1,7 @@
 .Filter img {
     display: block;
-    height: 3.7rem;
-    width: 3.7rem;
+    height: clamp(1rem, 2vw + 2rem, 3.7rem);
+    width: clamp(1rem, 2vw + 2rem, 3.7rem);
     margin: 0 auto;
 }
 
